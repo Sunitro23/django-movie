@@ -1,10 +1,11 @@
+import datetime
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 
-# Create your models here.
-class Movies(models.Model):
+class Genre(models.Model):
+    name = models.CharField(max_length=100)
+
+class Movie(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
-    year = models.DateField(help_text='Release year')
-    genre = ArrayField(models.CharField(max_length=100))
-    poster = models.CharField(max_length=200)
+    year = models.DateField(help_text="Release year")
+    genres = models.ManyToManyField(Genre, blank=True)

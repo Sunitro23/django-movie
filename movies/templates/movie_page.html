@@ -1,0 +1,14 @@
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    {% csrf_token %}
+    <title>{{ movie.title }}</title>
+  </head>
+  <body>
+    <h1>{{ movie.title }}</h1>
+    <p>{{ movie.year }}</p>
+    {% if movie.genres %} {% for genre in movie.genres.all   %}
+    <p>{{ genre.name }}</p>
+    {% endfor %} {% endif %}
+  </body>
+</html>
