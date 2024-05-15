@@ -1,13 +1,9 @@
-from asyncio import Future
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
-from .models import Movies
 from .forms import MovieForm
 from django.shortcuts import render
 from .models import Movie
-from movies.service import get_movie_by_id_db, get_movies_by_title_db
+from movies.service import get_movie_by_id_db, get_movies_by_title_db, get_movies_by_title_api
 
 
 def index(request):
@@ -18,9 +14,16 @@ def index(request):
     elif request.method == "POST":
         form = MovieForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(commit=False)            
+            title = form.cleaned_data['title']
+            movies = get_movies_by_title_api(title)
+            return movies(request, movies)
     else:
         return HttpResponse("Erreur")
+    
+def movies(request, movies):
+    context = {'movies' : movies}
+    return render(request, 'movies.html', context)
         
     
 def movie_page(request, movie_id):
@@ -33,9 +36,3 @@ def movie_page(request, movie_id):
         return render(request, "movie_page.html", {"movie": movie})
     else:
         return HttpResponse("No movie found.")
-
-
-class MovieFormView(CreateView):
-    model = Movies
-    fields = ['title', 'year', 'genre', 'poster']
-    success_url = reverse_lazy('search')

@@ -1,7 +1,7 @@
 from django import forms
-from .models import Movies
+from .models import Movie
 
 class MovieForm(forms.ModelForm):
     class Meta:
-        model = Movies
+        model = Movie
         fields = ['title']
