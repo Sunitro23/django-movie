@@ -1,7 +1,5 @@
-from asyncio import Future
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Movie
 from movies.service import get_movie_by_id_db, get_movies_by_title_db
 
 
@@ -10,11 +8,8 @@ def index(request):
 
 
 def movie_page(request, movie_id):
-    try:
-        get_movies_by_title_db("Star Wars")
-        movie = get_movie_by_id_db(movie_id)
-    except Movie.DoesNotExist:
-        movie = None
+    get_movies_by_title_db("Star Wars")
+    movie = get_movie_by_id_db(movie_id)
     if movie:
         return render(request, "movie_page.html", {"movie": movie})
     else:
