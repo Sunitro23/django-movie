@@ -7,4 +7,4 @@ class Movies(models.Model):
     title = models.CharField(max_length=100)
     year = models.DateField(help_text='Release year')
     genre = ArrayField(models.CharField(max_length=100))
-    poster = models.CharField()
+    poster = models.CharField(max_length=200)
