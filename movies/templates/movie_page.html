@@ -7,8 +7,8 @@
   <body>
     <h1>{{ movie.title }}</h1>
     <p>{{ movie.year }}</p>
-    {% if movie.genres %} {% for genre in movie.genres.all   %}
-    <p>{{ genre.name }}</p>
+    {% if movie.genre %} {% for single_genre in movie.genre.all %}
+    <p>{{ single_genre.name }}</p>
     {% endfor %} {% endif %}
   </body>
 </html>
