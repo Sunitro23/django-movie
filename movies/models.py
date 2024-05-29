@@ -10,7 +10,7 @@ class Genre(models.Model):
 class Movie(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
-    year = models.IntegerField(help_text="Release year")
+    year = models.CharField(help_text="Release year", max_length=100)
     genre = models.ManyToManyField(Genre, blank=True)
     poster = models.URLField(max_length=200, default="https://via.placeholder.com/150")
 

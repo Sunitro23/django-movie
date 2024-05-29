@@ -23,14 +23,27 @@ def add_genres_to_movie(movie: Movie, genres: list[Genre]):
 def get_movies_by_title_api(title):
     url = f"https://www.omdbapi.com/?s={title}&apikey={api_key}"
     response = requests.get(url)
-    print(response.json()["Year"])
     if response.status_code == 200:
-        movie = response.json()
-        return [map_json_to_movie(movie)]
+        json = response.json()        
+        movie = json["Search"]
+        return [map_json_to_movies(movie)]
 
 
 def get_movie_by_id_db(movie_id):
     return Movie.objects.get(id=movie_id)
+
+
+def map_json_to_movies(json):
+    movies_list = []
+    for search in json:
+        movie = Movie(
+            title=search['Title'],
+            year=search['Year'],
+            poster=search['Poster'],
+        )
+        movie.save()
+        movies_list.append(movie)
+    return movies_list
 
 
 def map_json_to_movie(json):

@@ -2,7 +2,7 @@ from asyncio import Future
 from django.http import HttpResponse
 from .forms import MovieForm
 from django.shortcuts import render
-from movies.service import get_movie_by_id_db, get_movies_by_title_db
+from movies.service import get_movie_by_id_db, get_movies_by_title_db, get_movies_by_title_api
 
 
 def index(request):
@@ -16,12 +16,12 @@ def index(request):
             form.save(commit=False)            
             title = form.cleaned_data['title']
             movies = get_movies_by_title_api(title)
-            return movies(request, movies)
+            return getMovies(request, movies)
     else:
         return HttpResponse("Erreur")
     
-def movies(request, movies):
-    context = {'movies' : movies}
+def getMovies(request, movies):
+    context = {'movies' : movies[0]}
     return render(request, 'movies.html', context)
         
     
