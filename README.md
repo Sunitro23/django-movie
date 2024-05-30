@@ -24,19 +24,25 @@ To get started with the Django app, follow these steps:
    pip install -r requirements.txt
    ```
 
-4. Apply database migrations:
+4. Create a `.env` file in the project directory and add the following line:
+
+   ```shell
+   API_KEY=<your_api_key_from_omdbapi>
+   ```
+
+5. Apply database migrations:
 
    ```shell
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-5. Launch the development server:
+6. Launch the development server:
 
    ```shell
    python manage.py runserver
    ```
 
-6. Open your web browser and visit `http://localhost:8000` to access the Django app.
+7. Open your web browser and visit `http://localhost:8000` to access the Django app.
 
-7. Alternatively, you can also see a demo of the application at [movie.sunitro.de](http://movie.sunitro.de).
+8. Alternatively, you can also see a demo of the application at [movie.sunitro.de](http://movie.sunitro.de).
