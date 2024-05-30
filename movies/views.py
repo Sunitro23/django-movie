@@ -1,34 +1,41 @@
 from asyncio import Future
+from typing import List
 from django.http import HttpResponse
+
+from movies.models import Movie
 from .forms import MovieForm
 from django.shortcuts import render
-from movies.service import get_movie_by_id_db, get_movies_by_title_db, get_movies_by_title_api
+from movies.service import (
+    get_movie,
+    get_movies,
+)
 
 
 def index(request):
     if request.method == "GET":
-        form = MovieForm()
-        context = {"form" : form}
-        return render(request, 'index.html', context)
+        context = {"form": MovieForm()}
+        return render(request, "index.html", context)
     elif request.method == "POST":
         form = MovieForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)            
-            title = form.cleaned_data['title']
-            movies = get_movies_by_title_api(title)
-            return getMovies(request, movies)
+            form.save(commit=False)
+            title = form.cleaned_data["title"]
+            movies: List[Movie] = get_movies(title)
+            return get_movies_search(request, movies)
     else:
         return HttpResponse("Erreur")
-    
-def getMovies(request, movies):
-    context = {'movies' : movies[0]}
-    return render(request, 'movies.html', context)
-        
-    
+
+
+def get_movies_search(request, movies):
+    if movies is None:
+        return HttpResponse("No movies found")
+    return render(request, "movies.html", {"movies": movies, "form": MovieForm()})
+
+
 def movie_page(request, movie_id):
-    get_movies_by_title_db("Star Wars")
-    movie = get_movie_by_id_db(movie_id)
+    movie = get_movie(movie_id)
+    print(movie)
     if movie:
-        return render(request, "movie_page.html", {"movie": movie})
+        return render(request, "movie_page.html", {"movie": movie, "form": MovieForm()})
     else:
         return HttpResponse("No movie found.")
